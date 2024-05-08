@@ -1,0 +1,9 @@
+CREATE TABLE users(
+ID VARCHAR(255) UNIQUE,
+phoneNumber INT UNIQUE,
+pass VARCHAR(255),
+FName VARCHAR(255),
+LName VARCHAR(255),
+PRIMARY KEY(ID, phoneNumber)
+);
+
