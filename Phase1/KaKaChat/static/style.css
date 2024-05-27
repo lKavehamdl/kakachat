@@ -1,0 +1,66 @@
+body{
+    margin : 2em;
+}
+table {
+    margin : 2em;
+    border-collapse: collapse;
+}   
+tr:nth-child(even){
+    background-color: red;
+}
+th{
+    padding-right : 2.5em;
+}
+td{
+    padding-right : .5em;
+    color: white;
+    font-size: 20px;
+}
+h1{
+    color:white
+}
+h2{
+    color:gray
+}
+input{
+    background-color: gray;
+    color: black;
+    border-color: magenta;
+    border-radius: 2px;
+    border: 2.5cm;
+    font: 20px;
+}
+input::placeholder{
+    color: white;
+    font: bold;
+}
+button {
+    border: 20px magenta;
+    color: white;
+    padding: 15px 32px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    margin: 4px 2px;
+    cursor: pointer;
+    background-color: red;
+    border-radius: .5cm;
+    border-color: magenta;
+}
+button:hover{
+    border: none;
+    color: black;
+    padding: 15px 32px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    margin: 4px 2px;
+    cursor: pointer;
+    background-color: white;
+    border-radius: .5cm;
+}
+a{
+    color: red;
+}

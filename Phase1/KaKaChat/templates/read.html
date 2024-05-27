@@ -1,0 +1,31 @@
+<!--Store this code in 'display.html' file inside the 'templates' folder-->
+
+<html lang="en">
+	<head>
+		<title>KaKaChat</title>
+		<link rel="stylesheet" href="../static/style.css">
+	</head>
+	<body bgcolor="#00000">
+		<div class="one">
+			<div class="content" align="center">
+				<div class="topbar">
+					<h2>Welcome!! You are in Display Page!! </h2>				 
+				</div> 
+				<div class="contentbar">
+					{% for x in results %}
+                        <table>
+                            <tr>
+                                <td>First name:</td>
+                                <td>{{ x['FName'] }}</td>
+                            </tr>
+                            <tr>
+                                <td>Last name:</td>
+                                <td>{{ x['LName'] }}</td>
+                            </tr>
+                        </table>
+					{% endfor %}									 
+				</div>
+			</div>
+		</div>
+	</body>
+</html>
