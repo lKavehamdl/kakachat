@@ -9,17 +9,32 @@
             <button type="submit" class="button">Log Out</button>
         </form>
         <form action="{{url_for('chats')}}" method="get">
-            {% for x in chats %}
-            <table>
-                <tr>
-                    <td> {{x['chatID']}} : {{x['contactName']}}</td>
-                </tr>
-            </table>
-        {% endfor %}									 
+            {% block content %}
+                {% for x in chats %}
+                <table>
+                    <tr>
+                            {% if x['contactName'] == None %}
+                                <td> {{x['chatID']}} : {{x['groupName']}}</td>
+                            {% else %}
+                                <td> {{x['chatID']}} : {{x['contactName']}}</td>
+                            {% endif %}
+                        </tr>
+                    </table>
+                    {% endfor %}									 
+            {%endblock content%}
         </form>
         <form action="{{url_for('chats')}}" method="post">
 			<input type="text" name="chatID" placeholder="Enter ID of chat you want to see" class="textbox" id="chatID" required></br></br>
             <button type="submit"> submit</button>
+        </form>
+        <form action="{{url_for('createContact')}}" method="GET" name="createContact">
+            <button type="submit"> Create new contact</button>
+        </form>
+        <form action="{{url_for('createChat')}}" method="GET" name="createChat">
+            <button type="submit"> Create new chat</button>
+        </form>
+        <form action="{{url_for('createGroupChat')}}" method="GET" name="createGroupChat">
+            <button type="submit"> Create new group chat</button>
         </form>
     </body>
 </html>

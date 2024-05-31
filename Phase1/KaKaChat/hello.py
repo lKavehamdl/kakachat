@@ -84,30 +84,27 @@ def login():
             ip = request.remote_addr
             saveLogin = request.form.get("saveLogin")
             if(saveLogin == "on"):
-                print("YES")
                 saveLogin = True
             else:
-                print("NO")
                 saveLogin = False
-            print(saveLogin)
             cursor.execute("SELECT * FROM users")
             res = cursor.fetchall()
             for x in res:
                 if x['ID'] == username and x['pass'] == password:
                     phoneNumber = x['phoneNumber']
+                    global token
+                    token = phoneNumber
                     if saveLogin:
-                        # values = (username, phoneNumber, ip, 1)
-                        # print(values)
-                        # print(" ======== ")
                         cursor.execute('INSERT INTO authentication VALUES (%s, %s, %s, %s)',(username, phoneNumber, ip, "1"))
                         mysql.connection.commit()
                         print("INSERTED")
-                    cursor.execute('SELECT * FROM chats WHERE phoneNumber1 = %s', [phoneNumber])
-                    chats = cursor.fetchall()
-                    #return redirect("/chats", chats = chats)
-                    Id = phoneNumber
-                    #return render_template('chats.html', chats = chats)
-        return render_template('login.html')
+                    else:
+                        cursor.execute('INSERT INTO authentication VALUES (%s, %s, %s, %s)',(username, phoneNumber, ip, "0"))
+                        mysql.connection.commit()
+                        print("INSERTED")
+                    return redirect(url_for('chats'))
+        elif request.method == "GET":
+            return render_template("login.html")
     except:
         return "<h1> mission failed </h1>"
     
@@ -120,9 +117,49 @@ def chats():
         return render_template("chats.html", chats = res)
     elif request.method == 'POST':
         chatid = request.form.get('chatID')
-        #print(chatid)
         return redirect(url_for('page', id = chatid))
-        
+    
+@app.route("/createContact", methods = ["GET", "POST"])
+def createContact():
+    cursor = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
+    if request.method == "GET":
+        return render_template("createContact.html")
+    elif request.method == "POST":
+        name = request.form.get("name")
+        phoneNumber = request.form.get("phoneNumber")
+        print((name , phoneNumber))
+        cursor.execute("INSERT INTO contacts(phoneNumber1, phoneNumber2, contactName) VALUES(%s, %s, %s)",(token, phoneNumber, name))
+        mysql.connection.commit()
+        print("DONE!")
+        return redirect(url_for('chats'))
+    
+@app.route("/createChat", methods = ["GET", "POST"])
+def createChat():
+    cursor = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
+    if request.method == "GET":
+        cursor.execute("SELECT * FROM contacts WHERE phoneNumber1 = %s", [token])
+        res = cursor.fetchall()
+        return render_template("createChat.html", res = res)
+    elif request.method == "POST":
+        name = request.form.get("name")
+        cursor.execute("SELECT * FROM contacts WHERE contactName = %s AND phoneNumber1 = %s", (name, token))
+        res = cursor.fetchone()
+        print(res)
+        phoneNumber = res["phoneNumber2"]       
+        cursor.execute("INSERT INTO chats(phoneNumber1, phoneNumber2, contactName) VALUES(%s, %s, %s)", (token, phoneNumber, name))
+        mysql.connection.commit()
+        return redirect(url_for('chats'))
+    
+@app.route("/createGroupChat", methods = ["GET", "POST"])
+def createGroupChat():
+    cursor = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
+    if request.method == "GET":
+        return render_template("createGroupChat.html")
+    elif request.method == "POST":
+        name = request.form.get('name')
+        cursor.execute("INSERT INTO chats(phoneNumber1, groupName) VALUES(%s, %s)", (token, name))
+        mysql.connection.commit()
+        return redirect(url_for('chats'))
 
 @app.route("/page/<id>", methods = ['POST', 'GET'])
 def page(id):
