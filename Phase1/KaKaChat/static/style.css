@@ -13,7 +13,7 @@ th{
 }
 td{
     padding-right : .5em;
-    color: white;
+    color: gray;
     font-size: 20px;
 }
 h1{
@@ -34,7 +34,7 @@ input::placeholder{
     color: white;
     font: bold;
 }
-button {
+.button {
     border: 20px magenta;
     color: white;
     padding: 15px 32px;
@@ -48,7 +48,7 @@ button {
     border-radius: .5cm;
     border-color: magenta;
 }
-button:hover{
+.button:hover{
     border: none;
     color: black;
     padding: 15px 32px;
@@ -61,6 +61,13 @@ button:hover{
     background-color: white;
     border-radius: .5cm;
 }
+.button2{
+    background-color: black;
+    color: gray;
+}
 a{
     color: red;
+}
+label{
+    color: white;
 }

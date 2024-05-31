@@ -14,12 +14,35 @@ app.config['MYSQL_PASSWORD'] = 'k..h3002'
 app.config['MYSQL_DB'] = 'kakachat'
 
 mysql = MySQL(app)
+msg = ""
+token = ""
 
-
-@app.route('/')
-def hello_world():
-    return render_template('index.html')
-
+@app.route('/', methods = ['GET', 'POST'])
+def index():
+    cursor = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
+    cursor.execute('SELECT * FROM authentication')
+    res = cursor.fetchall()
+    if request.method == "GET":
+        for x in res:
+            if x['IP'] == request.remote_addr:
+                phoneNumber = x['phoneNumber']
+                global token
+                token = phoneNumber
+                cursor.execute('SELECT * FROM chats WHERE phoneNumber1 = %s', [phoneNumber])
+                chats = cursor.fetchall()
+                #return render_template('chats.html', chats = chats)
+                return redirect(url_for('chats'))
+        return render_template('index.html')
+    elif request.method == "POST":
+        for x in res:
+            if x['IP'] == request.remote_addr:
+                username = x['ID']
+                print(username)
+                token =""
+                cursor.execute("DELETE FROM authentication WHERE ID = %s", [username])
+                mysql.connection.commit()
+                return render_template('index.html')
+            
 @app.route("/r")
 def read():
     try:
@@ -32,8 +55,8 @@ def read():
 @app.route("/register", methods = ['GET', 'POST'])
 def create():
     #try:
-        cursor = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
         msg = ""
+        cursor = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
         if request.method == 'POST':
             username = request.form.get("username")
             phoneNumber = request.form.get("phoneNumber")
@@ -56,24 +79,61 @@ def login():
     try:
         cursor = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
         if request.method == 'POST':
-            username = request.form.get("useranme")
+            username = request.form.get("username")
             password = request.form.get("password")
             ip = request.remote_addr
             saveLogin = request.form.get("saveLogin")
+            if(saveLogin == "on"):
+                print("YES")
+                saveLogin = True
+            else:
+                print("NO")
+                saveLogin = False
+            print(saveLogin)
             cursor.execute("SELECT * FROM users")
             res = cursor.fetchall()
             for x in res:
                 if x['ID'] == username and x['pass'] == password:
+                    phoneNumber = x['phoneNumber']
                     if saveLogin:
-                        cursor.execute('INSERT INTO users VALUES (% s, % s, % s, % s)'(username, x['phoneNumber'], ip, saveLogin))
+                        # values = (username, phoneNumber, ip, 1)
+                        # print(values)
+                        # print(" ======== ")
+                        cursor.execute('INSERT INTO authentication VALUES (%s, %s, %s, %s)',(username, phoneNumber, ip, "1"))
                         mysql.connection.commit()
-                        print("user :" + x['username'] + "authenticated")
-                    cursor.execute('SELECT * FROM chats WHERE phoneNumber1 = \"%s\"', x['phoneNumber'])
+                        print("INSERTED")
+                    cursor.execute('SELECT * FROM chats WHERE phoneNumber1 = %s', [phoneNumber])
                     chats = cursor.fetchall()
-                    return render_template('chats.html', chats = chats)
+                    #return redirect("/chats", chats = chats)
+                    Id = phoneNumber
+                    #return render_template('chats.html', chats = chats)
         return render_template('login.html')
     except:
         return "<h1> mission failed </h1>"
+    
+@app.route("/chats", methods=['GET', 'POST'])
+def chats():
+    cursor = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
+    if request.method == 'GET':
+        cursor.execute("SELECT * FROM chats WHERE phoneNumber1 = %s", [token])
+        res = cursor.fetchall()
+        return render_template("chats.html", chats = res)
+    elif request.method == 'POST':
+        chatid = request.form.get('chatID')
+        #print(chatid)
+        return redirect(url_for('page', id = chatid))
+        
+
+@app.route("/page/<id>", methods = ['POST', 'GET'])
+def page(id):
+    print(id)
+    cursor = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
+    if request.method == "GET":
+        cursor.execute("SELECT * FROM messages WHERE chatID = %s", [id])
+        res = cursor.fetchall()
+        for x in res:
+            print(x)
+        return render_template("page.html", res = res)
 
 if __name__ == "__main__":
     app.run()

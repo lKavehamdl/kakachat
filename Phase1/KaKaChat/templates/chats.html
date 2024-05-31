@@ -1,0 +1,25 @@
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title> KaKaChat </title>
+		<link rel="stylesheet" href="../static/style.css"> 
+	</head>
+	<body bgcolor="000000">
+        <form action="{{url_for('index')}}" method="post">
+            <button type="submit" class="button">Log Out</button>
+        </form>
+        <form action="{{url_for('chats')}}" method="get">
+            {% for x in chats %}
+            <table>
+                <tr>
+                    <td> {{x['chatID']}} : {{x['contactName']}}</td>
+                </tr>
+            </table>
+        {% endfor %}									 
+        </form>
+        <form action="{{url_for('chats')}}" method="post">
+			<input type="text" name="chatID" placeholder="Enter ID of chat you want to see" class="textbox" id="chatID" required></br></br>
+            <button type="submit"> submit</button>
+        </form>
+    </body>
+</html>
