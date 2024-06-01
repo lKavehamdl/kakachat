@@ -36,5 +36,14 @@
         <form action="{{url_for('createGroupChat')}}" method="GET" name="createGroupChat">
             <button type="submit"> Create new group chat</button>
         </form>
+        <form action="{{url_for('addMember')}}" method="GET" name="addMember">
+            <button type="submit"> Add a member to a group</button>
+        </form>
+        <form action="{{url_for('changeInfo')}}" method="GET" name="changePersonalInfo">
+            <button type="submit"> Change info</button>
+        </form>
+        <form action="{{url_for('Info')}}" method="GET" name="changePersonalInfo">
+            <button type="submit"> Your info</button>
+        </form>
     </body>
 </html>

@@ -1,0 +1,22 @@
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>KaKaChat</title>
+    <link rel="stylesheet" href="../static/style.css">
+</head>
+<body bgcolor="000000">
+    <form action="{{url_for('changeUsername')}}" method="get">
+        <button type="submit" class="button">change username</button>
+    </form>
+    <form action="{{url_for('changePassword')}}" method="get">
+        <button type="submit" class="button">change password</button>
+    </form>		
+    <form action="{{url_for('changeFname')}}" method="get">
+        <button type="submit" class="button">change first name</button>
+    </form>	
+    <form action="{{url_for('changeLname')}}" method="get">
+        <button type="submit" class="button">change last name</button>
+    </form>			
+</body>
+</html>

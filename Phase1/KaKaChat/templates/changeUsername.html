@@ -1,0 +1,14 @@
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>KaKaChat</title>
+    <link rel="stylesheet" href="../static/style.css">
+</head>
+<body bgcolor="000000">
+        <form action="{{url_for('changeUsername')}}" method="post">
+			<input type="text" name="username" placeholder="Enter new username" class="textbox" id="username" required></br></br>
+            <button type="submit" class="button">Send</button>
+        </form>					
+</body>
+</html>
