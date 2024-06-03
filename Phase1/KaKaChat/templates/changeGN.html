@@ -1,0 +1,35 @@
+<!--Store this code in 'display.html' file inside the 'templates' folder-->
+
+<html lang="en">
+	<head>
+		<title>KaKaChat</title>
+		<link rel="stylesheet" href="../static/style.css">
+	</head>
+	<body bgcolor="#00000">
+		<div class="one">
+			<div class="content" align="center">
+				<div class="topbar">			 
+				</div> 
+				<div class="contentbar">
+					{% for x in res %}
+                        <table>
+							<tr>
+                                <td>chatID : {{x['chatID']}}</td>
+							</tr>
+                            <tr>
+                                <td>
+                                    group name : {{x['groupName']}}
+                                </td>
+                            </tr>
+                        </table>
+					{% endfor %}	
+                    <form action="{{url_for('changeGroupName')}}" method="post">
+                        <input type="text" name="chatId" placeholder="chat ID" class="textbox" id="chatId" required></br></br>
+                        <input type="text" name="name" placeholder="Enter new name" class="textbox" id="name" required></br></br>
+                        <button type="submit" class="button">Submit</button>
+                    </form>								 
+				</div>
+			</div>
+		</div>
+	</body>
+</html>

@@ -1,0 +1,33 @@
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title> KaKaChat </title>
+		<link rel="stylesheet" href="../static/style.css"> 
+	</head>
+	<body bgcolor="000000">
+        <form action="{{url_for('index')}}" method="post">
+            <button type="submit" class="button">Log Out</button>
+        </form>
+        <form action="{{url_for('addMember')}}" method="get">
+            {% block content %}
+                {% for x in res %}
+                <table>
+                    <tr>
+                        <td>
+                            Contact name : {{x['contactName']}}
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Phone number : {{x['phoneNumber']}}</td>
+                    </tr>
+                </table>
+                {% endfor %}									 
+            {%endblock content%}
+        </form>
+        <form action="{{url_for('changeContact')}}" method="post">
+            <input type="text" name="phoneNumber" placeholder="Enter their phone number" class="textbox" id="phoneNumber" required></br></br>
+            <input type="text" name="name" placeholder="Enter their name" class="textbox" id="name" required></br></br>
+            <button type="submit" class="button">Submit</button>
+        </form>
+    </body>
+</html>

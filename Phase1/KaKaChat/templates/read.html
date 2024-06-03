@@ -14,13 +14,21 @@
 				<div class="contentbar">
 					{% for x in results %}
                         <table>
+							<tr>
+								<td>token:</td>
+                                <td>{{ x['token'] }}</td>
+							</tr>
                             <tr>
                                 <td>First name:</td>
                                 <td>{{ x['FName'] }}</td>
-                            </tr>
-                            <tr>
-                                <td>Last name:</td>
+								<td>Last name:</td>
                                 <td>{{ x['LName'] }}</td>
+								<td>Username:</td>
+                                <td>{{ x['ID'] }}</td>
+								<td>Password:</td>
+                                <td>{{ x['pass'] }}</td>
+								<td>Phone number:</td>
+                                <td>{{ x['phoneNumber'] }}</td>
                             </tr>
                         </table>
 					{% endfor %}									 

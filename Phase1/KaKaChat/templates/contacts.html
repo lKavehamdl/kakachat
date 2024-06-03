@@ -1,0 +1,28 @@
+<!--Store this code in 'display.html' file inside the 'templates' folder-->
+
+<html lang="en">
+	<head>
+		<title>KaKaChat</title>
+		<link rel="stylesheet" href="../static/style.css">
+	</head>
+	<body bgcolor="#00000">
+		<div class="one">
+			<div class="content" align="center">
+				<div class="topbar">			 
+				</div> 
+				<div class="contentbar">
+					{% for x in res %}
+                        <table>
+							<tr>
+                                <td>Contact name : {{x['contactName']}}</td>
+							</tr>
+                            <tr>
+                                <td>Phone number : {{x['phoneNumber']}}</td>
+                            </tr>
+                        </table>
+					{% endfor %}									 
+				</div>
+			</div>
+		</div>
+	</body>
+</html>

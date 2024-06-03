@@ -6,16 +6,32 @@
     <link rel="stylesheet" href="../static/style.css">
 </head>
 <body bgcolor="000000">
+    {% block content%}
         {% for x in res %}
             <table>
                 <tr>
-                    <td> {{x['sender']}} : {{x['message']}} {{x['messageTime']}}</td>
-                </tr>
+                    <td> 
+                        {% if x['sender'] == token %}
+                            <td>YOU : {{x['message']}} {{x['messageTime']}}</td>
+                        {% elif x['sender'] == x['token2'] %}
+                            <td>{{x['contactName']}} : {{x['message']}} {{x['messageTime']}}</td>
+                        {% else %}    
+                            <td>{{x['phoneNumber']}} : {{x['message']}} {{x['messageTime']}}</td>
+                        {% endif %}
+                    </td>
+                </tr>                    
             </table>
         {% endfor %}	
+    {% endblock content%}
         <form action="{{url_for('page', id = chatid)}}" method="post">
 			<input type="text" name="message" placeholder="message" class="textbox" id="message" required></br></br>
             <button type="submit" class="button">Send</button>
-        </form>					
+        </form>			
+        <form action="{{url_for('deleteMessage')}}" method="get">
+            <button class="button" type="submit">delete message</button>
+        </form>		
+        <form action="{{url_for('editMessage')}}" method="get">
+            <button class="button" type="submit">edit message</button>
+        </form>		
 </body>
 </html>

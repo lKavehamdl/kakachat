@@ -5,19 +5,27 @@
 		<link rel="stylesheet" href="../static/style.css"> 
 	</head>
 	<body bgcolor="000000">
-        <form action="{{url_for('index')}}" method="post">
+        <form action="{{url_for('logOut')}}" method="post">
             <button type="submit" class="button">Log Out</button>
         </form>
         <form action="{{url_for('chats')}}" method="get">
             {% block content %}
-                {% for x in chats %}
+                {% for x in res2 %}
                 <table>
                     <tr>
-                            {% if x['contactName'] == None %}
-                                <td> {{x['chatID']}} : {{x['groupName']}}</td>
-                            {% else %}
+                        {% if x['contactName'] == None and x['groupName'] == None %}
+                            {% for y in chats %}
+                                {% if x['token1'] == y['token1'] and x['token2'] == y['token2'] %}
+                                    <td> {{x['chatID']}} : {{y['phoneNumber']}}</td>
+                                {%endif%}
+                            {%endfor%}
+                        {% else %}
+                            {%if x['contactName'] == None%}
+                                <td>{{x['chatID']}} : {{x['groupName']}}</td>
+                            {%else%}
                                 <td> {{x['chatID']}} : {{x['contactName']}}</td>
-                            {% endif %}
+                            {%endif%}
+                        {% endif %}
                         </tr>
                     </table>
                     {% endfor %}									 
@@ -30,11 +38,29 @@
         <form action="{{url_for('createContact')}}" method="GET" name="createContact">
             <button type="submit"> Create new contact</button>
         </form>
+        <form action="{{url_for('deleteChat')}}" method="GET" name="createContact">
+            <button type="submit"> Delete chat</button>
+        </form>
+        <form action="{{url_for('contactList')}}" method="GET" name="createContact">
+            <button type="submit">Contacts</button>
+        </form>
+        <form action="{{url_for('deleteContacts')}}" method="GET" name="changePersonalInfo">
+            <button type="submit"> Delete a contact</button>
+        </form>
+        <form action="{{url_for('changeContact')}}" method="GET" name="changePersonalInfo">
+            <button type="submit"> change contact</button>
+        </form>
         <form action="{{url_for('createChat')}}" method="GET" name="createChat">
             <button type="submit"> Create new chat</button>
         </form>
         <form action="{{url_for('createGroupChat')}}" method="GET" name="createGroupChat">
             <button type="submit"> Create new group chat</button>
+        </form>
+        <form action="{{url_for('changeGroupName')}}" method="GET" name="changePersonalInfo">
+            <button type="submit"> Change group name</button>
+        </form>
+        <form action="{{url_for('leaveGP')}}" method="GET" name="changePersonalInfo">
+            <button type="submit"> Leave a group</button>
         </form>
         <form action="{{url_for('addMember')}}" method="GET" name="addMember">
             <button type="submit"> Add a member to a group</button>
